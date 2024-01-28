@@ -15,4 +15,4 @@ void main()
 {
 	gl_Position =  camMatrix * model * vec4(aPosition, 1.0); // coordinates
 	//texCoord = aTexCoord;
-}e
+}
