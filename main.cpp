@@ -238,12 +238,6 @@ int main()
 	Shader lightShader("light.vert", "light.frag");
 	VAO lightVAO;
 	lightVAO.Bind();
-	for (const auto& coord : lightVertices) {
-		std::cout << "(" << coord.x << ", " << coord.y << ", " << coord.z << ")" << std::endl;
-	}
-	for (const auto& num : lightIndices) {
-		std::cout << num << std::endl;
-	}
 	VBO lightVBO(lightVertices);
 	EBO lightEBO(lightIndices);
 	lightVAO.LinkAttrib(0, 3, lightVBO);
@@ -281,63 +275,6 @@ int main()
 	float crntTime;
 	float timeDelta;
 	unsigned int counter = 0;
-	
-	GLint logLength;
-	glGetShaderiv(shaderProgram.ID, GL_INFO_LOG_LENGTH, &logLength);
-	//
-	//std::cout << logLength;
-	//if (logLength > 0) {
-	//	GLsizei maxLength = logLength * 2; // Double the log length as an initial buffer size
-	//	GLsizei actualLength = 0;
-	//	std::vector<GLchar> log(maxLength);
-	//
-	//	// Retrieve the compilation log
-	//	glGetShaderInfoLog(shaderProgram.ID, maxLength, &actualLength, log.data());
-	//
-	//	// Check if the log was truncated
-	//	while (actualLength >= maxLength - 1) {
-	//		// Buffer was too small, double the size and try again
-	//		maxLength *= 2;
-	//		log.resize(maxLength);
-	//		glGetShaderInfoLog(shaderProgram.ID, maxLength, &actualLength, log.data());
-	//	}
-	//
-	//	// Output or handle the compilation log
-	//	std::cerr << "Shader compilation log:\n" << std::string(log.data(), actualLength) << std::endl;
-	//	// Handle compilation failure here if needed
-	//}
-	//else {
-	//	std::cerr << "Error: Unable to retrieve shader compilation log length" << std::endl;
-	//	// Handle error condition here
-	//}
-	cout << logLength << endl;
-
-	GLint compileStatus;
-	glGetShaderiv(shaderProgram.ID, GL_COMPILE_STATUS, &compileStatus);
-	if (compileStatus != GL_TRUE) { 
-		cout << "shader compilation failed";
-	}
-
-
-	//GLint compileStatus;
-	//glGetShaderiv(shaderProgram.ID, GL_COMPILE_STATUS, &compileStatus);
-	//
-	//if (compileStatus == GL_FALSE) {
-	//	GLint logLength;
-	//	glGetShaderiv(shaderProgram.ID, GL_INFO_LOG_LENGTH, &logLength);
-	//
-	//	if (logLength > 0) {
-	//		std::vector<GLchar> log(logLength + 1); // +1 for null terminator
-	//		GLsizei length;
-	//		glGetShaderInfoLog(shaderProgram.ID, logLength, &length, log.data());
-	//
-	//		// Ensure null termination
-	//		log[length] = '\0';
-	//
-	//		// Print or handle the error log
-	//		printf("Shader compilation failed: %s\n", log.data());
-	//	}
-	//}
 
 	while (!glfwWindowShouldClose(window)){
 		start = glfwGetTime();
