@@ -92,7 +92,7 @@ vector<glm::vec3> lightVertices = {
 	glm::vec3(0.1f,	 0.1f,	 0.1f)
 };
 
-vector<int> lightIndices = {
+vector<GLuint> lightIndices = {
 	0, 1, 2,
 	0, 2, 3,
 	0, 4, 7,
@@ -187,57 +187,58 @@ int main()
 	//}
 	//create.close();
 
-	vector <string> save;
-	fstream file;
-	file.open("save.txt");
-	string chr;
-	while (!file.eof()) {
-		file >> chr;
-		save.push_back(chr);
-	}
-	file.close();
-
-	vector <vector <int>> world;
-	string mhm;
-	for (int i = 0; i < size(save); i++) {
-		world.push_back(vector <int>());
-		//cout << endl;
-		int a = 0;
-		int b = 0;
-
-		for (int j = 0; j < save[i].size(); j++) {
-			if (save[i][j] == ',') {
-				mhm = save[i];
-				string h = string(mhm.substr(j - a, a));
-				world[i].push_back(stoi(h));
-				//cout << h << " | ";
-				a = 0;
-				b++;
-			}
-			else {
-				a++;
-			}
-		}
-	}
-
-	for (int x = 0; x < size(word); x++) {
-		for (int y = 0; y < size(word[x]); y++) {
-			for (int z = 0; z < size(word[x][y]); z++) {
-				word[x][y][z] = 0;
-			}
-		}
-	}
-
-	for (int i = 0; i < size(world); i++) {
-		word[(world[i][0])][(world[i][1])][(world[i][2])] = world[i][3];
-	}
+	//vector <string> save;
+	//fstream file;
+	//file.open("save.txt");
+	//string chr;
+	//while (!file.eof()) {
+	//	file >> chr;
+	//	save.push_back(chr);
+	//}
+	//file.close();
+	//
+	//vector <vector <int>> world;
+	//string mhm;
+	//for (int i = 0; i < size(save); i++) {
+	//	world.push_back(vector <int>());
+	//	//cout << endl;
+	//	int a = 0;
+	//	int b = 0;
+	//
+	//	for (int j = 0; j < save[i].size(); j++) {
+	//		if (save[i][j] == ',') {
+	//			mhm = save[i];
+	//			string h = string(mhm.substr(j - a, a));
+	//			world[i].push_back(stoi(h));
+	//			//cout << h << " | ";
+	//			a = 0;
+	//			b++;
+	//		}
+	//		else {
+	//			a++;
+	//		}
+	//	}
+	//}
+	//
+	//for (int x = 0; x < size(word); x++) {
+	//	for (int y = 0; y < size(word[x]); y++) {
+	//		for (int z = 0; z < size(word[x][y]); z++) {
+	//			word[x][y][z] = 0;
+	//		}
+	//	}
+	//}
+	//
+	//for (int i = 0; i < size(world); i++) {
+	//	word[(world[i][0])][(world[i][1])][(world[i][2])] = world[i][3];
+	//}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Shader shaderProgram("chunk.vert", "chunk.frag");
+	Shader shaderProgram("light.vert", "light.frag");
 
 	Shader lightShader("light.vert", "light.frag");
 	VAO lightVAO;
 	lightVAO.Bind();
+
 	VBO lightVBO(lightVertices);
 	EBO lightEBO(lightIndices);
 	lightVAO.LinkAttrib(0, 3, lightVBO);
@@ -261,7 +262,7 @@ int main()
 
 	Chunk chunk(glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0, 0, 0));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	shaderProgram.Bind();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
@@ -308,7 +309,7 @@ int main()
 		chunk.Render(shaderProgram);
 
 
-		renderUI(window);
+		//renderUI(window);
 
 		placing.Click(word, window, camera);
 
@@ -317,7 +318,7 @@ int main()
 		lightShader.Bind();
 		camera.Matrix(lightShader, "camMatrix");
 		lightVAO.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);					// Swap the back buffer with the front buffer
 		glfwPollEvents();							// Take care of all GLFW events
