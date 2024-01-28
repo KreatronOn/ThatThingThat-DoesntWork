@@ -13,7 +13,7 @@ class Chunk {
 	private:
 		std::vector<glm::vec3> chunkVerts;
 		std::vector<glm::vec2> chunkUVs;
-		std::vector<int> chunkIndices;
+		std::vector<GLuint> chunkIndices;
 
 		glm::uint indexCount;
 
