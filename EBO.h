@@ -1,6 +1,8 @@
 #ifndef EBO_CLASS_H
 #define EBO_CLASS_H
 
+#include<iostream>	//delete after ending debugging
+
 #include<glad/glad.h>
 #include <vector>
 #include<glm/glm.hpp>
@@ -13,7 +15,7 @@ class EBO {
 public:
 	GLuint ID;
 
-	EBO(std::vector<int> data);
+	EBO(std::vector<GLuint> data);
 
 	void Bind();
 	void Unbind();
