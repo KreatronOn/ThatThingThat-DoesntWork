@@ -10,9 +10,9 @@ chunkEBO(chunkIndices), texture("cob.png") {
 	BuildChunk();
 }
 void Chunk::GenBlocks() {
-	for (int x = 0; x < 1; x++) {
-		Block block(glm::vec3(x, 0, 0));
-		Block::FaceData upFace = block.GetFace(Block::Faces::YM);
+	for (float x = 0.0f; x < 2; x++) {
+		Block block(glm::vec3(x, 0.0f, 0.0f));
+		Block::FaceData upFace = block.GetFace(Block::Faces::YP);
 		chunkVerts.insert(chunkVerts.end(), upFace.vertices.begin(), upFace.vertices.end());
 		chunkUVs.insert(chunkUVs.end(), upFace.uv.begin(), upFace.uv.end());
 
@@ -36,22 +36,16 @@ void Chunk::AddIndices(int amntFaces) {
 void Chunk::BuildChunk() {
 	chunkVAO.Bind();
 
-	for (const auto& coord : chunkVerts) {
-		std::cout << "(" << coord.x << ", " << coord.y << ", " << coord.z << ")" << std::endl;
-	}
-	for (const auto& num : chunkIndices) {
-		std::cout << num << std::endl;
-	}
 
 	VBO chunkVertexVBO(chunkVerts);
-	EBO chunkEBO(chunkIndices);
-	//chunkVertexVBO.Bind();
+	chunkVertexVBO.Bind();
 	chunkVAO.LinkAttrib(0, 3, chunkVertexVBO);
 
 	//VBO chunkUVVBO(chunkUVs);
 	//chunkUVVBO.Bind();
 	//chunkVAO.LinkAttrib(1, 2, chunkUVVBO);
 
+	EBO chunkEBO(chunkIndices);
 
 	//Texture texture("grass.png");
 }
@@ -62,7 +56,7 @@ void Chunk::Render(Shader& shader) {
 	chunkEBO.Bind();
 	//texture.Bind();
 	//texture.texUnit(shader, "tex0", 0);
-	glDrawElements(GL_TRIANGLES, sizeof(chunkIndices) / sizeof(int), GL_UNSIGNED_INT, 0); //chunkIndeces.count() if indeCount wont work
+	glDrawElements(GL_TRIANGLES, chunkIndices.size(), GL_UNSIGNED_INT, 0);
 }
 
 void Chunk::Delete() {
